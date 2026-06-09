@@ -11,12 +11,12 @@
   var CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap');
 :root{
-  --background:oklch(1 0 0); --foreground:oklch(0.145 0 0); --card:oklch(1 0 0);
-  --muted:oklch(0.97 0 0); --muted-foreground:oklch(0.556 0 0);
+  --background:oklch(0.985 0 0); --foreground:oklch(0.22 0 0); --card:oklch(1 0 0);
+  --muted:oklch(0.955 0 0); --muted-foreground:oklch(0.52 0 0);
   --primary:oklch(0.457 0.24 277.023); --primary-foreground:oklch(0.962 0.018 272.314);
-  --secondary:oklch(0.967 0.001 286.375); --accent:oklch(0.97 0 0);
-  --border:oklch(0.922 0 0); --destructive:oklch(0.577 0.245 27.325);
-  --sidebar:oklch(0.985 0 0); --sidebar-primary:oklch(0.511 0.262 276.966);
+  --secondary:oklch(0.955 0 0); --accent:oklch(0.955 0 0);
+  --border:oklch(0.90 0 0); --destructive:oklch(0.577 0.245 27.325);
+  --sidebar:oklch(0.972 0 0); --sidebar-primary:oklch(0.511 0.262 276.966);
   --ok:oklch(0.62 0.13 162); --warn:oklch(0.70 0.15 70);
   --pre-bg:oklch(0.205 0 0); --pre-fg:oklch(0.97 0 0);
   --radius:0; --shadow-xs:0 1px 2px 0 oklch(0 0 0 / .04); --shadow-sm:0 1px 2px 0 oklch(0 0 0 / .06);
