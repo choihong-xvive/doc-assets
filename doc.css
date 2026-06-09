@@ -102,17 +102,22 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 /* 콜아웃 (blockquote → JS 변환) */
 .md-body blockquote{border:1px solid var(--border);border-left:3px solid var(--muted-foreground);background:var(--muted);padding:var(--sp-4) var(--sp-5);margin:var(--sp-5) 0;}
 .md-body blockquote p:last-child{margin-bottom:0;}
-.callout-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground);margin-bottom:var(--sp-2);}
-.callout-info{border-left-color:var(--primary);background:color-mix(in srgb,var(--primary) 4%,var(--card));}
-.callout-info .callout-title{color:var(--primary);}
-.callout-ok{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 5%,var(--card));}
-.callout-ok .callout-title{color:var(--ok);}
-.callout-warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,var(--card));}
-.callout-warn .callout-title{color:var(--warn);}
-.callout-danger{border-left-color:var(--destructive);border-color:color-mix(in srgb,var(--destructive) 22%,var(--border));background:color-mix(in srgb,var(--destructive) 5%,var(--card));}
-.callout-danger .callout-title{color:var(--destructive);}
-:root[data-theme=dark] .callout-info,:root[data-theme=dark] .callout-ok,:root[data-theme=dark] .callout-warn,:root[data-theme=dark] .callout-danger,:root[data-theme=dark] .compare-bad,:root[data-theme=dark] .compare-good{background:var(--muted);}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .callout-info,:root:not([data-theme=light]) .callout-ok,:root:not([data-theme=light]) .callout-warn,:root:not([data-theme=light]) .callout-danger,:root:not([data-theme=light]) .compare-bad,:root:not([data-theme=light]) .compare-good{background:var(--muted);}}
+.md-body .callout-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground);margin-bottom:var(--sp-2);}
+/* 변형은 베이스(.md-body blockquote)보다 특이도 높게 (.md-body blockquote.callout-*) */
+.md-body blockquote.callout-info{border-left-color:var(--primary);background:color-mix(in srgb,var(--primary) 4%,var(--card));}
+.md-body blockquote.callout-info .callout-title{color:var(--primary);}
+.md-body blockquote.callout-ok{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 5%,var(--card));}
+.md-body blockquote.callout-ok .callout-title{color:var(--ok);}
+.md-body blockquote.callout-warn{border-left-color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,var(--card));}
+.md-body blockquote.callout-warn .callout-title{color:var(--warn);}
+.md-body blockquote.callout-danger{border-left-color:var(--destructive);border-color:color-mix(in srgb,var(--destructive) 22%,var(--border));background:color-mix(in srgb,var(--destructive) 5%,var(--card));}
+.md-body blockquote.callout-danger .callout-title{color:var(--destructive);}
+/* 다크: 콜아웃 배경만 무채색 (변형보다 특이도 높게) */
+:root[data-theme=dark] .md-body blockquote.callout-info,:root[data-theme=dark] .md-body blockquote.callout-ok,:root[data-theme=dark] .md-body blockquote.callout-warn,:root[data-theme=dark] .md-body blockquote.callout-danger{background:var(--muted);}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .md-body blockquote.callout-info,:root:not([data-theme=light]) .md-body blockquote.callout-ok,:root:not([data-theme=light]) .md-body blockquote.callout-warn,:root:not([data-theme=light]) .md-body blockquote.callout-danger{background:var(--muted);}}
+/* 다크: compare 배경 무채색 */
+:root[data-theme=dark] .compare-bad,:root[data-theme=dark] .compare-good{background:var(--muted);}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .compare-bad,:root:not([data-theme=light]) .compare-good{background:var(--muted);}}
 
 /* 단계 = 순서 리스트 (CSS 카운터 원형) */
 .md-body ol{list-style:none;counter-reset:step;padding-left:0;margin:var(--sp-4) 0 var(--sp-6);}
