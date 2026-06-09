@@ -4,15 +4,14 @@
 서빙한다 → 문서 HTML 하나만 공유해도(인터넷만 되면) 스타일·렌더가 적용됨.
 
 ## 파일
-- `doc.css` — shadcn 토큰(neutral + indigo) 기반 문서 스타일 (light/dark)
+- (스타일 CSS는 `doc.js`에 내장 — 별도 doc.css 파일 없음)
 - `doc.js` — 마크다운 렌더 + 사이드바 자동생성 + 콜아웃/표/단계 변환 + 테마토글 + 맨위로
 - `theme-init.js` — 렌더 전 테마 적용(no-flash), `<head>`에서 동기 로드
 
 ## 사용 (문서 HTML)
 ```html
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v3/theme-init.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v3/doc.css">
+  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v4/theme-init.js"></script>
 </head>
 <body>
   <button id="themeToggle" type="button"></button>
@@ -25,7 +24,7 @@
   … 마크다운 콘텐츠 …
   </script>
   <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v3/doc.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v4/doc.js"></script>
 </body>
 ```
 
