@@ -3,6 +3,8 @@
 마크다운 **자가렌더 단일 HTML 문서**용 공용 스타일·렌더러. 공개로 두고 jsDelivr가 marked처럼
 서빙한다 → 문서 HTML 하나만 공유해도(인터넷만 되면) 스타일·렌더가 적용됨.
 
+> **새 문서 만들기:** 작성 가이드 → [`AUTHORING.md`](AUTHORING.md) · 복붙 시작점 → [`TEMPLATE.html`](TEMPLATE.html)
+
 ## 파일
 - (스타일 CSS는 `doc.js`에 내장 — 별도 doc.css 파일 없음)
 - `doc.js` — 마크다운 렌더 + 사이드바 자동생성 + 콜아웃/표/단계 변환 + 테마토글 + 맨위로
