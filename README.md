@@ -9,9 +9,10 @@
 - `theme-init.js` — 렌더 전 테마 적용(no-flash), `<head>`에서 동기 로드
 
 ## 사용 (문서 HTML)
+`<commit>` 자리에 **커밋 SHA**를 넣는다(아래 "버전 고정" 참고).
 ```html
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v5/theme-init.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@<commit>/theme-init.js"></script>
 </head>
 <body>
   <button id="themeToggle" type="button"></button>
@@ -24,9 +25,10 @@
   … 마크다운 콘텐츠 …
   </script>
   <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v5/doc.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@<commit>/doc.js"></script>
 </body>
 ```
+> 스타일은 `doc.js`가 인라인 `<style>`로 주입한다(외부 CSS `<link>`는 Obsidian HTML Viewer 등 샌드박스 CSP가 막으므로 별도 link 불필요).
 
 ## 콘텐츠 규약 (마크다운)
 - 섹션 = `## 제목` (사이드바 자동)
@@ -35,7 +37,11 @@
 - 다이어그램 = ` ``` ` 코드펜스(다크)
 - 표지·비교박스 등 특수블록 = 소량 inline HTML
 
-## 버전 고정 (중요)
-공유한 문서가 안 깨지게 **태그로 핀**한다: `@v1`, `@v2` … (또는 커밋 해시).
-스타일을 바꾸면 새 태그를 만들고, 기존 문서는 옛 태그에 남겨 안정성을 유지.
-`@main`은 jsDelivr 캐시(최대 7일) 때문에 즉시 반영이 안 될 수 있음 → 배포본엔 태그 사용.
+## 버전 고정 (중요) — 커밋 SHA 권장
+jsDelivr는 **커밋 SHA**(`@a9200ab…`)를 즉시·영구 서빙한다. 반면 **태그는 캐시 이슈**가 잦다:
+새 태그는 한동안 404, 이동한 태그는 옛 내용을 stale 서빙(목록/매핑 캐시). 그래서 **배포 문서는 커밋 SHA로 핀**한다.
+
+- 자산 수정 → 커밋/푸시 → 그 **커밋 SHA**를 문서 HTML의 jsDelivr URL에 박는다.
+- 기존 문서는 옛 SHA에 그대로 남아 안 깨짐(불변).
+- `@main`은 "항상 최신"이지만 mutable + 캐시(최대 7일) → 개발 미리보기용으로만.
+- 부득이 태그를 쓰면 새 태그 생성(이동 금지) + 필요 시 `https://purge.jsdelivr.net/gh/<user>/doc-assets@<ref>/<file>`로 purge.
