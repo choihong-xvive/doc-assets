@@ -1,13 +1,38 @@
 /* =====================================================================
    마크다운 자가렌더 단일 HTML 렌더러
    사용: 문서 HTML에
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/<user>/doc-assets@v1/doc.css">
+     <link rel="stylesheet" data-doc-style href=".../doc-assets@v3/doc.css">
      <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/gh/<user>/doc-assets@v1/doc.js"></script>
+     <script src=".../doc-assets@v3/doc.js"></script>
    필요한 DOM: #source(마크다운), #content, #nav, #themeToggle, #toTop
+   참고: Obsidian HTML Viewer 등 샌드박스는 <head>의 <link>/<script>를 제거하므로,
+   스타일시트와 테마를 런타임에 직접 주입한다(브라우저에도 무해 — 중복 시 skip).
    ===================================================================== */
 (function () {
+  // doc.js 자신의 src에서 베이스 URL 추출 (버전 무관하게 같은 태그의 doc.css 주입)
+  var BASE = (function () {
+    var s = document.currentScript;
+    if (s && s.src) return s.src.replace(/doc\.js(\?.*)?$/, '');
+    return 'https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v3/';
+  })();
+
+  function ensureStyle() {
+    if (document.querySelector('link[data-doc-style],style[data-doc-style]')) return;
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = BASE + 'doc.css';
+    l.setAttribute('data-doc-style', '');
+    (document.head || document.documentElement).appendChild(l);
+  }
+
+  function applySavedTheme() {
+    try { var t = localStorage.getItem('mdtheme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  }
+
   function run() {
+    ensureStyle();      // 샌드박스에서 <head> link가 제거된 경우 대비
+    applySavedTheme();  // head theme-init이 제거된 경우 대비
+
     var srcEl = document.getElementById('source');
     var host = document.getElementById('content');
     if (!srcEl || !host) return;
@@ -83,6 +108,7 @@
       window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
     }
   }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
   else run();
 })();

@@ -11,8 +11,8 @@
 ## 사용 (문서 HTML)
 ```html
 <head>
-  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v2/theme-init.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v2/doc.css">
+  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v3/theme-init.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v3/doc.css">
 </head>
 <body>
   <button id="themeToggle" type="button"></button>
@@ -25,7 +25,7 @@
   … 마크다운 콘텐츠 …
   </script>
   <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v2/doc.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@v3/doc.js"></script>
 </body>
 ```
 
