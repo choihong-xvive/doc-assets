@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>문서 제목</title>
-<!-- 자산 = choihong-xvive/doc-assets. 배포/공유본은 @main 대신 커밋 SHA로 고정(AUTHORING.md 참고). -->
+<title>{{문서 제목}}</title>
+<!-- 자산 = choihong-xvive/doc-assets. 공유/배포본은 @main 대신 커밋 SHA로 고정(AUTHORING.md §5). -->
 <script src="https://cdn.jsdelivr.net/gh/choihong-xvive/doc-assets@main/theme-init.js"></script>
 </head>
 <body>
@@ -14,14 +14,14 @@
 
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-brand">브랜드/팀</div>
-    <div class="sidebar-title">문서 제목<br>한 줄 더</div>
+    <div class="sidebar-brand">{{브랜드/팀}}</div>
+    <div class="sidebar-title">{{사이드바<br>제목}}</div>
     <span class="sidebar-version">v1.0</span>
     <nav class="sidebar-nav"><ul id="nav"></ul></nav>   <!-- ## 섹션에서 자동 생성됨 -->
     <div class="sidebar-meta">
-      <strong>Issued</strong> 2026.06<br>
-      <strong>Target</strong> 대상 독자<br>
-      <strong>Scope</strong> 범위
+      <strong>Issued</strong> {{YYYY.MM}}<br>
+      <strong>Target</strong> {{대상 독자}}<br>
+      <strong>Scope</strong> {{범위}}
     </div>
   </aside>
 
@@ -31,7 +31,7 @@
 </div>
 
 <!-- ===================================================================
-     콘텐츠 = 마크다운. 편집은 여기만. (규약: AUTHORING.md)
+     콘텐츠 = 마크다운. 편집은 이 <script id="source"> 안에서만. (규약: AUTHORING.md)
      · 섹션      = "## 제목"                  (사이드바 자동)
      · 소제목    = "### 제목"
      · 콜아웃    = "> [!INFO|OK|WARN|DANGER] 제목"  + 빈 ">" 줄 + 본문
@@ -41,69 +41,42 @@
      =================================================================== -->
 <script type="text/markdown" id="source">
 <header class="cover">
-  <div class="cover-eyebrow">카테고리 / EYEBROW</div>
-  <h1 class="cover-title">문서 제목<br>두 번째 줄</h1>
-  <p class="cover-subtitle">한 문장 요약. 이 문서가 무엇을 다루고 누구를 위한 것인지.</p>
+  <div class="cover-eyebrow">{{카테고리 / EYEBROW}}</div>
+  <h1 class="cover-title">{{표지<br>제목}}</h1>
+  <p class="cover-subtitle">{{한 문장 요약 — 이 문서가 무엇을 다루고 누구를 위한 것인지.}}</p>
   <div class="cover-meta">
     <div><span>Version</span><b>v1.0</b></div>
-    <div><span>Issued</span><b>2026.06</b></div>
+    <div><span>Issued</span><b>{{YYYY.MM}}</b></div>
     <div><span>Status</span><b>Draft</b></div>
-    <div><span>Scope</span><b>Internal</b></div>
   </div>
 </header>
 
 > [!INFO] TL;DR
 >
-> - 핵심 요점 1
-> - 핵심 요점 2
+> - {{핵심 요점 1}}
+> - {{핵심 요점 2}}
 
-## 첫 번째 섹션
+## {{첫 번째 섹션}}
 
-본문 단락. **굵게**, `인라인 코드`, [링크](https://example.com) 모두 일반 마크다운.
+{{본문…}} **굵게**, `인라인 코드`, [링크](https://example.com) 모두 일반 마크다운.
 
 | 컬럼 A | 컬럼 B |
 |---|---|
 | 값 1 | 값 2 |
-| 값 3 | 값 4 |
 
-> [!WARN] 주의 박스
->
-> 경고/주의 내용.
+## {{두 번째 섹션}}
 
-### 소제목
-
-- 불릿 목록
-- 항목 2
-
-## 두 번째 섹션 (단계 예시)
-
-1. **1단계** — 설명. 숫자 리스트는 원형 번호로 렌더됨.
+1. **1단계** — 숫자 리스트는 원형 번호로 렌더됨.
 2. **2단계** — 설명.
-3. **3단계** — 설명.
-
-> [!OK] 권장
->
-> 권장/성공 박스(초록).
-
-## 세 번째 섹션 (다이어그램 / 비교)
-
-```
-코드펜스 = 다크 박스 (ASCII 다이어그램·트리에 사용)
-A ──> B ──> C
-```
 
 <div class="compare">
-  <div class="compare-col compare-bad"><div class="compare-label">❌ 나쁨</div><p>안티패턴 설명.</p></div>
-  <div class="compare-col compare-good"><div class="compare-label">✅ 좋음</div><p>권장 방식 설명.</p></div>
+  <div class="compare-col compare-bad"><div class="compare-label">❌ 나쁨</div><p>{{안티패턴}}</p></div>
+  <div class="compare-col compare-good"><div class="compare-label">✅ 좋음</div><p>{{권장}}</p></div>
 </div>
-
-> [!DANGER] 중요
->
-> 치명적/필수 주의(빨강).
 
 ---
 
-*문서 푸터 · 출처/참조 등.*
+*{{문서 푸터 · 출처/참조}}*
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>

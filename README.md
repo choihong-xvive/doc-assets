@@ -4,6 +4,7 @@
 서빙한다 → 문서 HTML 하나만 공유해도(인터넷만 되면) 스타일·렌더가 적용됨.
 
 > **새 문서 만들기:** 작성 가이드 → [`AUTHORING.md`](AUTHORING.md) · 복붙 시작점 → [`TEMPLATE.html`](TEMPLATE.html)
+> **AI 에이전트로 만들기:** Claude Code 스킬 → [`skills/share-doc/`](skills/share-doc/) (`~/.claude/skills/`에 복사해 설치)
 
 ## 파일
 - (스타일 CSS는 `doc.js`에 내장 — 별도 doc.css 파일 없음)
