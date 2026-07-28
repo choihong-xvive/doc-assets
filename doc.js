@@ -126,10 +126,12 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 @media (max-width:680px){.compare{grid-template-columns:1fr;}}
 #themeToggle{position:fixed;top:var(--sp-4);right:var(--sp-5);z-index:9999;cursor:pointer;background:var(--background);color:var(--muted-foreground);border:1px solid var(--border);padding:var(--sp-2) var(--sp-3);font:600 11.5px/1 "Nunito Sans",system-ui,sans-serif;box-shadow:var(--shadow-xs);}
 #themeToggle:hover{background:var(--accent);color:var(--foreground);border-color:var(--muted-foreground);}
+#copyMd{position:fixed;top:calc(var(--sp-4) + 30px);right:var(--sp-5);z-index:9999;cursor:pointer;background:var(--background);color:var(--muted-foreground);border:1px solid var(--border);padding:var(--sp-2) var(--sp-3);font:600 11.5px/1 "Nunito Sans",system-ui,sans-serif;box-shadow:var(--shadow-xs);}
+#copyMd:hover{background:var(--accent);color:var(--foreground);border-color:var(--muted-foreground);}
 #toTop{position:fixed;bottom:var(--sp-6);right:var(--sp-5);z-index:9999;cursor:pointer;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:var(--primary-foreground);border:1px solid var(--primary);font-size:17px;box-shadow:var(--shadow-sm);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .15s,transform .15s,filter .12s;}
 #toTop.show{opacity:1;transform:none;pointer-events:auto;}
 #toTop:hover{filter:brightness(1.1);}
-@media print{#themeToggle,#toTop,.sidebar{display:none;}.layout{grid-template-columns:1fr;}.main{padding:20px;max-width:100%;}}
+@media print{#themeToggle,#copyMd,#toTop,.sidebar{display:none;}.layout{grid-template-columns:1fr;}.main{padding:20px;max-width:100%;}}
 `;
 
   function ensureStyle() {
@@ -209,6 +211,72 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
       tg.onclick = function () { var n = isDark() ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); try { localStorage.setItem('mdtheme', n); } catch (e) {} lbl(); };
       lbl();
     }
+
+    // 마크다운 복사 버튼. 문서 HTML 을 고치지 않아도 되도록 여기서 만든다(#copyMd 를 직접 둔 문서면 그걸 쓴다).
+    var cp = document.getElementById('copyMd');
+    if (!cp) {
+      cp = document.createElement('button');
+      cp.id = 'copyMd';
+      cp.type = 'button';
+      cp.setAttribute('aria-label', '마크다운으로 복사');
+      cp.title = '이 문서를 마크다운으로 복사';
+      document.body.appendChild(cp);
+    }
+    var CP_LABEL = '📋 MD 복사', cpTimer = null;
+    cp.textContent = CP_LABEL;
+
+    // 세로 위치만 잰다 — 가로는 CSS 가 #themeToggle 과 같은 right:var(--sp-5) 로 맞춘다.
+    // (window.innerWidth 로 계산하면 스크롤바 폭만큼 밀린다.) 높이는 패딩·폰트에서 나와 토큰으로 못 박는다.
+    function placeCopy() {
+      if (!tg) return;
+      var r = tg.getBoundingClientRect();
+      if (r.height) cp.style.top = (r.bottom + 8) + 'px';
+    }
+    placeCopy();
+    window.addEventListener('resize', placeCopy);
+    setTimeout(placeCopy, 200);   // 웹폰트가 늦게 붙어 토글 높이가 바뀌는 경우 대비
+
+    function cpFlash(text) {
+      cp.textContent = text;
+      clearTimeout(cpTimer);
+      cpTimer = setTimeout(function () { cp.textContent = CP_LABEL; }, 1500);
+    }
+
+    // 커버는 raw HTML 이라 마크다운으로 못 쓴다 — 제목/eyebrow/리드만 뽑아 h1 + 인용 + 문단으로 바꾼다.
+    function asMarkdown() {
+      var cover = src.match(/<header class="cover">[\s\S]*?<\/header>/);
+      if (!cover) return src.trim() + '\n';
+      var box = document.createElement('div');
+      box.innerHTML = cover[0].replace(/<br\s*\/?>/gi, ' ');
+      var flat = function (sel) {
+        var el = box.querySelector(sel);
+        return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+      };
+      var head = [];
+      var title = flat('.cover-title'), eyebrow = flat('.cover-eyebrow'), lead = flat('.cover-subtitle');
+      if (title) head.push('# ' + title);
+      if (eyebrow) head.push('> ' + eyebrow);
+      if (lead) head.push(lead);
+      return src.replace(cover[0], head.join('\n\n')).trim() + '\n';
+    }
+
+    cp.onclick = function () {
+      var text = asMarkdown();
+      var ok = function () { cpFlash('✓ 복사됨'); };
+      var legacy = function () {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); ok(); } catch (e) { cpFlash('✕ 복사 실패'); }
+        document.body.removeChild(ta);
+      };
+      // file:// 이나 비보안 컨텍스트에서는 clipboard API 가 막히므로 폴백이 필수다.
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy);
+      else legacy();
+    };
 
     var top = document.getElementById('toTop');
     if (top) {
