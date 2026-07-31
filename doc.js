@@ -92,11 +92,13 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .md-body pre code{background:transparent;color:var(--pre-fg);padding:0;font-size:13px;font-family:var(--mono);}
 .table-wrap{border:1px solid var(--border);overflow:hidden;margin:var(--sp-4) 0 var(--sp-6);box-shadow:var(--shadow-xs);}
 .md-body table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);}
-.md-body th{background:var(--muted);color:var(--muted-foreground);text-align:left;padding:10px 15px;font-weight:600;font-size:12.5px;border-bottom:1px solid var(--border);}
+.md-body th{background:var(--muted);color:var(--muted-foreground);padding:10px 15px;font-weight:600;font-size:12.5px;border-bottom:1px solid var(--border);}
+.md-body th:not([align]){text-align:left;}
 .md-body td{padding:10px 15px;border-bottom:1px solid var(--border);vertical-align:top;}
 .md-body tbody tr:last-child td{border-bottom:0;}
 .md-body tbody tr:hover td{background:color-mix(in srgb,var(--muted) 55%,transparent);}
 .md-body td code{white-space:nowrap;}
+.md-body th.col-tight,.md-body td.col-tight{width:1%;white-space:nowrap;}
 .md-body blockquote{border:1px solid var(--border);border-left:3px solid var(--muted-foreground);background:var(--muted);padding:var(--sp-4) var(--sp-5);margin:var(--sp-5) 0;}
 .md-body blockquote p:last-child{margin-bottom:0;}
 .md-body .callout-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground);margin-bottom:var(--sp-2);}
@@ -162,7 +164,27 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
       host.innerHTML = '<pre style="white-space:pre-wrap">' + src.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }) + '</pre>';
     }
 
+    // 열 폭: 짧은 값만 담은 열(#, 상태 아이콘, 코드 한 단어 등)은 내용 폭에 고정해 남는 폭을
+    // 서술형 열로 몰아준다. table-layout:auto 만으로는 여유 폭이 전 열에 고르게 퍼진다.
+    // 헤더 텍스트는 판정에서 제외한다 — 헤더 라벨이 데이터보다 길어 열을 넓혀버리는 경우가 흔하다.
+    var TIGHT_COL_MAXLEN = 12;
     host.querySelectorAll('table').forEach(function (t) {
+      var rows = t.rows;
+      if (rows.length) {
+        var colLen = [];
+        Array.prototype.forEach.call(rows, function (r) {
+          if (r.parentNode && r.parentNode.tagName === 'THEAD') return;
+          Array.prototype.forEach.call(r.cells, function (c, i) {
+            var len = c.textContent.trim().length;
+            if (len > (colLen[i] || 0)) colLen[i] = len;
+          });
+        });
+        Array.prototype.forEach.call(rows, function (r) {
+          Array.prototype.forEach.call(r.cells, function (c, i) {
+            if (colLen[i] > 0 && colLen[i] <= TIGHT_COL_MAXLEN) c.classList.add('col-tight');
+          });
+        });
+      }
       var w = document.createElement('div'); w.className = 'table-wrap';
       t.parentNode.insertBefore(w, t); w.appendChild(t);
     });
