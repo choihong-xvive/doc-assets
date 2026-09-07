@@ -51,6 +51,8 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .sidebar-brand{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-foreground);font-weight:700;margin-bottom:var(--sp-2);}
 .sidebar-title{font-size:18px;font-weight:800;line-height:1.3;margin-bottom:var(--sp-3);letter-spacing:-.02em;}
 .sidebar-version{display:inline-block;font-size:10px;border:1px solid color-mix(in srgb,var(--primary) 40%,transparent);color:var(--primary);background:color-mix(in srgb,var(--primary) 8%,transparent);padding:2px 8px;margin-bottom:var(--sp-8);font-weight:700;letter-spacing:.05em;}
+/* 버전 배지를 사이드바 하단(메타 뒤)에 둔 문서용. 위에 둔 기존 문서는 그대로다 */
+.sidebar-meta + .sidebar-version{margin:var(--sp-5) 0 0;}
 .sidebar-nav ul{list-style:none;padding:0;margin:0;}
 .sidebar-nav li{margin-bottom:1px;}
 .sidebar-nav a{display:flex;gap:var(--sp-2);padding:6px 10px;color:var(--muted-foreground);text-decoration:none;font-size:13px;line-height:1.4;transition:background .12s,color .12s;}
