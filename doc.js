@@ -60,12 +60,12 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .sidebar-nav a.active{color:var(--sidebar-primary);background:color-mix(in srgb,var(--sidebar-primary) 10%,transparent);font-weight:600;}
 .sidebar-nav .n{color:var(--muted-foreground);font-size:11px;font-weight:700;min-width:18px;font-variant-numeric:tabular-nums;}
 .sidebar-nav a.active .n{color:var(--sidebar-primary);}
-/* 사이드바 진행도: sticky 라 스크롤 어디서든 보인다. 범례는 세로로 쌓는다 */
-.sidebar-progress{margin-top:var(--sp-8);padding-top:var(--sp-5);border-top:1px solid var(--border);}
+/* 사이드바 진행도: sticky 라 스크롤 어디서든 보인다. 숫자 하나만 — 내역은 트래커 표에 있다 */
+.sidebar-progress{margin-top:var(--sp-6);padding-top:var(--sp-5);border-top:1px solid var(--border);}
 .sidebar-progress-title{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-foreground);font-weight:700;}
-.sidebar-progress .progress{height:8px;margin:var(--sp-3) 0 var(--sp-3);}
-.sidebar-progress .progress-legend{flex-direction:column;gap:5px;font-size:11.5px;margin:0;}
-.sidebar-progress .progress-legend>span{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-3);}
+.sidebar-progress .progress{height:6px;margin:var(--sp-2) 0;}
+.sidebar-progress-num{display:flex;align-items:baseline;justify-content:space-between;font-size:12.5px;color:var(--muted-foreground);}
+.sidebar-progress-num b{font-size:15px;font-weight:800;color:var(--foreground);font-variant-numeric:tabular-nums;}
 .sidebar-meta{margin-top:var(--sp-10);padding-top:var(--sp-5);border-top:1px solid var(--border);font-size:12px;color:var(--muted-foreground);line-height:1.85;}
 .sidebar-meta strong{color:var(--foreground);}
 .main{--main-px:var(--sp-16);padding:var(--sp-12) var(--main-px);max-width:900px;}
