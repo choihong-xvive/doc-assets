@@ -62,11 +62,11 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .sidebar-nav a.active .n{color:var(--sidebar-primary);}
 .sidebar-meta{margin-top:var(--sp-10);padding-top:var(--sp-5);border-top:1px solid var(--border);font-size:12px;color:var(--muted-foreground);line-height:1.85;}
 .sidebar-meta strong{color:var(--foreground);}
-.main{padding:var(--sp-12) var(--sp-16);max-width:900px;}
+.main{--main-px:var(--sp-16);padding:var(--sp-12) var(--main-px);max-width:900px;}
 @media (max-width:1024px){
   .layout{grid-template-columns:1fr;}
   .sidebar{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border);}
-  .main{padding:var(--sp-8) var(--sp-6);}
+  .main{--main-px:var(--sp-6);padding:var(--sp-8) var(--main-px);}
 }
 .cover{margin-bottom:var(--sp-16);padding-bottom:var(--sp-12);border-bottom:1px solid var(--border);}
 .cover-eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--primary);font-weight:700;margin-bottom:var(--sp-4);}
@@ -141,7 +141,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
    빈 띠가 보이고, 붙은 뒤엔 그 자리가 비어 보인다. 숫자를 베끼지 않고 그 .main 을 겨냥한다
    — 브레이크포인트마다 다른 padding 값을 따라 적지 않아도 된다. */
 .main:has(.doctabs){padding-top:0;}
-.doctabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;background:var(--background);border-bottom:1px solid var(--border);margin:0 0 var(--sp-8);}
+.doctabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;background:var(--background);border-bottom:1px solid var(--border);margin:0 calc(-1 * var(--main-px)) var(--sp-8);padding:0 calc(var(--main-px) - var(--sp-5));}
 /* sticky 탭이 앵커 대상을 가린다 — 탭이 있는 문서에서만 여유를 준다 */
 .md-body:has(.doctabs) h2{scroll-margin-top:5.5rem;}
 .doctabs a{padding:var(--sp-3) var(--sp-5);font-size:13.5px;font-weight:600;color:var(--muted-foreground);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s,background .12s;}
@@ -164,7 +164,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 #toTop{position:fixed;bottom:var(--sp-6);right:var(--sp-5);z-index:9999;cursor:pointer;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:var(--primary-foreground);border:1px solid var(--primary);font-size:17px;box-shadow:var(--shadow-sm);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .15s,transform .15s,filter .12s;}
 #toTop.show{opacity:1;transform:none;pointer-events:auto;}
 #toTop:hover{filter:brightness(1.1);}
-@media print{#themeToggle,#copyMd,#toTop,.sidebar{display:none;}.layout{grid-template-columns:1fr;}.main{padding:20px;max-width:100%;}}
+@media print{#themeToggle,#copyMd,#toTop,.sidebar{display:none;}.layout{grid-template-columns:1fr;}.main{--main-px:20px;padding:20px;max-width:100%;}.doctabs{position:static;}}
 `;
 
   function ensureStyle() {
