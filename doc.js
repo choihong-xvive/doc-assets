@@ -149,6 +149,21 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .doctabs a:hover{color:var(--foreground);background:var(--accent);text-decoration:none;}
 .doctabs a[aria-current=page]{color:var(--primary);border-bottom-color:var(--primary);}
 @media (max-width:680px){.doctabs a{padding:var(--sp-2) var(--sp-3);font-size:12.5px;}.md-body:has(.doctabs) h2,.md-body:has(.doctabs) .card{scroll-margin-top:4.5rem;}}
+/* 진행 막대: 누적 세그먼트 + 같은 줄 범례. 폭은 요소의 style 속성으로 들어온다
+   (색·간격은 여기서만 정한다 — 넘어오는 건 데이터뿐이다). */
+.progress{display:flex;height:10px;border:1px solid var(--border);overflow:hidden;margin:var(--sp-4) 0 var(--sp-3);background:var(--muted);}
+.progress .seg{width:var(--w,0);min-width:0;transition:width .2s;}
+.progress .seg-done{background:var(--ok);}
+.progress .seg-dev{background:var(--primary);}
+.progress .seg-block{background:var(--destructive);}
+.progress .seg-todo{background:var(--muted);}
+.progress-legend{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-5);font-size:12.5px;color:var(--muted-foreground);margin:0 0 var(--sp-6);}
+.progress-legend b{color:var(--foreground);font-variant-numeric:tabular-nums;}
+.progress-legend .sw{display:inline-block;width:9px;height:9px;margin-right:6px;vertical-align:baseline;border:1px solid color-mix(in srgb,var(--foreground) 15%,transparent);}
+.progress-legend .sw-done{background:var(--ok);}
+.progress-legend .sw-dev{background:var(--primary);}
+.progress-legend .sw-block{background:var(--destructive);}
+.progress-legend .sw-todo{background:var(--muted);}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4);margin:var(--sp-5) 0;}
 .compare-col{padding:var(--sp-4) var(--sp-5);border:1px solid var(--border);}
 .compare-bad{background:color-mix(in srgb,var(--destructive) 4%,var(--card));border-color:color-mix(in srgb,var(--destructive) 22%,var(--border));}
