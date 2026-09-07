@@ -129,6 +129,14 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
   .md-body .card>h3{padding-right:0;}
   .md-body .card>h3 .card-id{position:static;display:block;width:fit-content;margin:0 0 var(--sp-2);}
 }
+/* 상태 배지: 표의 값이 상태 어휘면 색으로 가른다. 어휘는 테마가 모른다 —
+   문서가 data-badges 로 「값 → 톤」 지도를 준다 (톤은 아래 다섯뿐). */
+.md-body .badge{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.02em;padding:2px 8px;border:1px solid;white-space:nowrap;line-height:1.5;}
+.md-body .badge-ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 38%,transparent);background:color-mix(in srgb,var(--ok) 10%,transparent);}
+.md-body .badge-info{color:var(--primary);border-color:color-mix(in srgb,var(--primary) 34%,transparent);background:color-mix(in srgb,var(--primary) 9%,transparent);}
+.md-body .badge-warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 42%,transparent);background:color-mix(in srgb,var(--warn) 12%,transparent);}
+.md-body .badge-danger{color:var(--destructive);border-color:color-mix(in srgb,var(--destructive) 32%,transparent);background:color-mix(in srgb,var(--destructive) 9%,transparent);}
+.md-body .badge-muted{color:var(--muted-foreground);border-color:var(--border);background:var(--muted);}
 /* 자동으로 걸린 요구사항 참조. 본문 링크와 구분되게 살짝 좁은 모노 */
 .md-body a.req-ref{font-family:var(--mono);font-size:.92em;white-space:nowrap;}
 .md-body .card:target{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary);}
@@ -316,6 +324,33 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
         }
         if (last < n.nodeValue.length) frag.appendChild(document.createTextNode(n.nodeValue.slice(last)));
         n.parentNode.replaceChild(frag, n);
+      });
+    }
+
+    // 상태 배지 — 표 칸의 값이 상태 어휘면 색으로 가른다.
+    // 어휘(done/dev-only/READY…)는 프로젝트 것이지 테마 것이 아니라, 문서가 지도를 준다.
+    var badgeAttr = host.getAttribute('data-badges');
+    if (badgeAttr) {
+      var tones = {};
+      try { tones = JSON.parse(badgeAttr); } catch (e) { tones = {}; }
+      var makeBadge = function (text, tone) {
+        var b = document.createElement('span');
+        b.className = 'badge badge-' + tone;
+        b.textContent = text;
+        return b;
+      };
+      // 코드 스팬으로 쓴 값 (`done`) 을 먼저 바꾼다
+      host.querySelectorAll('td code, th code').forEach(function (c) {
+        var t = c.textContent.trim();
+        if (tones[t]) c.parentNode.replaceChild(makeBadge(t, tones[t]), c);
+      });
+      // 맨 값만 든 칸 (| dev-only |) 도 바꾼다
+      host.querySelectorAll('td').forEach(function (td) {
+        if (td.querySelector('.badge')) return;
+        var t = td.textContent.trim();
+        if (!tones[t]) return;
+        td.textContent = '';
+        td.appendChild(makeBadge(t, tones[t]));
       });
     }
 
