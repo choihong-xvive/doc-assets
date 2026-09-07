@@ -4,6 +4,7 @@
      <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
      <script src=".../doc-assets@v4/doc.js"></script>
    필요한 DOM: #source(마크다운), #content, #nav, #themeToggle, #toTop
+   (#copyMd · #goBack 은 없으면 이 스크립트가 만든다)
    참고: Obsidian HTML Viewer 등 샌드박스는 외부 <link> 스타일을 CSP로 차단하므로,
    CSS를 이 파일에 내장해 <style>로 주입한다(스크립트가 만든 인라인 스타일은 허용).
    ===================================================================== */
@@ -159,6 +160,10 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .doctabs a:hover{color:var(--foreground);background:var(--accent);text-decoration:none;}
 .doctabs a[aria-current=page]{color:var(--primary);border-bottom-color:var(--primary);pointer-events:none;cursor:default;}
 @media (max-width:680px){.doctabs a{padding:var(--sp-2) var(--sp-3);font-size:12.5px;}.md-body:has(.doctabs) h2,.md-body:has(.doctabs) .card{scroll-margin-top:4.5rem;}}
+/* 뒤로가기: 탭 줄의 왼쪽 여백에 앉는다. 탭이 아니므로 밑줄도 현재 표시도 없다. */
+#goBack{flex:0 0 auto;align-self:center;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;margin-right:var(--sp-2);padding:0;cursor:pointer;background:transparent;color:var(--muted-foreground);border:1px solid transparent;font:600 16px/1 "Nunito Sans",system-ui,sans-serif;transition:color .12s,background .12s,border-color .12s;}
+#goBack:hover{color:var(--foreground);background:var(--accent);border-color:var(--border);}
+@media (max-width:680px){#goBack{width:24px;height:24px;font-size:14px;margin-right:var(--sp-1,4px);}}
 /* 진행 막대: 누적 세그먼트 + 같은 줄 범례. 폭은 요소의 style 속성으로 들어온다
    (색·간격은 여기서만 정한다 — 넘어오는 건 데이터뿐이다). */
 .progress{display:flex;height:10px;border:1px solid var(--border);overflow:hidden;margin:var(--sp-4) 0 var(--sp-3);background:var(--muted);}
@@ -190,7 +195,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 #toTop{position:fixed;bottom:var(--sp-6);right:var(--sp-5);z-index:9999;cursor:pointer;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:var(--primary-foreground);border:1px solid var(--primary);font-size:17px;box-shadow:var(--shadow-sm);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .15s,transform .15s,filter .12s;}
 #toTop.show{opacity:1;transform:none;pointer-events:auto;}
 #toTop:hover{filter:brightness(1.1);}
-@media print{#themeToggle,#copyMd,#toTop,.sidebar{display:none;}.layout{grid-template-columns:1fr;}.main{--main-px:20px;padding:20px;max-width:100%;}.doctabs{position:static;}}
+@media print{#themeToggle,#copyMd,#toTop,#goBack,.sidebar{display:none;}.layout{grid-template-columns:1fr;}.main{--main-px:20px;padding:20px;max-width:100%;}.doctabs{position:static;}}
 `;
 
   function ensureStyle() {
@@ -448,6 +453,23 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, legacy);
       else legacy();
     };
+
+    // 뒤로가기. 링크를 눌러 다른 문서로 갔다가 돌아올 자리다.
+    // 갈 데가 없으면(새 탭에서 연 첫 문서) 아예 만들지 않는다 — 눌러도 안 움직이는 버튼은 고장으로 보인다.
+    var tabs = document.querySelector('.doctabs');
+    if (tabs && history.length > 1) {
+      var back = document.getElementById('goBack');
+      if (!back) {
+        back = document.createElement('button');
+        back.id = 'goBack';
+        back.type = 'button';
+        back.setAttribute('aria-label', '뒤로 가기');
+        back.title = '뒤로 가기';
+        back.textContent = '←';
+        tabs.insertBefore(back, tabs.firstChild);
+      }
+      back.onclick = function () { history.back(); };
+    }
 
     var top = document.getElementById('toTop');
     if (top) {
