@@ -137,7 +137,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .md-body ol>li::before{content:counter(step);position:absolute;left:0;top:-1px;width:1.75rem;height:1.75rem;background:var(--primary);color:var(--primary-foreground);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
 /* 문서 탭: 한 기능의 형제 문서 사이 이동. 표가 아니라 네비게이션이므로 nav 로 쓴다
    (표로 만들면 마크다운 첫 행이 헤더가 되어 내용 없는 빈 표가 된다). */
-.doctabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;background:var(--background);border-bottom:1px solid var(--border);padding-top:var(--sp-4);margin:0 0 var(--sp-8);}
+.doctabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;background:var(--background);border-bottom:1px solid var(--border);margin:0 0 var(--sp-8);}
 /* sticky 탭이 앵커 대상을 가린다 — 탭이 있는 문서에서만 여유를 준다 */
 .md-body:has(.doctabs) h2{scroll-margin-top:5.5rem;}
 .doctabs a{padding:var(--sp-3) var(--sp-5);font-size:13.5px;font-weight:600;color:var(--muted-foreground);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s,background .12s;}
