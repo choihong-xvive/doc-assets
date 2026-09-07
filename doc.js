@@ -129,6 +129,8 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
   .md-body .card>h3{padding-right:0;}
   .md-body .card>h3 .card-id{position:static;display:block;width:fit-content;margin:0 0 var(--sp-2);}
 }
+/* 자동으로 걸린 요구사항 참조. 본문 링크와 구분되게 살짝 좁은 모노 */
+.md-body a.req-ref{font-family:var(--mono);font-size:.92em;white-space:nowrap;}
 .md-body .card:target{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary);}
 .md-body .card>*:last-child{margin-bottom:var(--sp-4);}
 .md-body .card .table-wrap{box-shadow:none;}
@@ -277,6 +279,43 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
         var idEl = document.createElement('span'); idEl.className = 'card-id'; idEl.textContent = m[1];
         var tEl = document.createElement('span'); tEl.className = 'card-title'; tEl.textContent = m[2].trim();
         h.appendChild(idEl); h.appendChild(tEl);
+      });
+    }
+
+    // 요구사항 ID 자동 링크 — 저자는 `REQ-XXX-001` 이라고만 쓴다.
+    // 손으로 거는 규칙이면 반드시 빠지는 문서가 생긴다. 렌더러가 건다.
+    //   · 같은 문서에 그 카드가 있으면 #ID (같은 페이지)
+    //   · 없으면 data-req-link 가 가리키는 문서의 #ID
+    //   · 이미 링크 안 · 코드/코드펜스 안 · 카드 자신의 배지는 건드리지 않는다
+    var reqBase = host.getAttribute('data-req-link');
+    if (reqBase) {
+      var localIds = {};
+      host.querySelectorAll('.card[id]').forEach(function (c) { localIds[c.id] = 1; });
+      var RE = /\b(REQ-[A-Z0-9]+-\d{3})\b/g;
+      var walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT, null);
+      var textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      textNodes.forEach(function (n) {
+        RE.lastIndex = 0;
+        if (!RE.test(n.nodeValue)) return;
+        for (var pnode = n.parentNode; pnode && pnode !== host; pnode = pnode.parentNode) {
+          var tag = pnode.tagName;
+          if (tag === 'A' || tag === 'CODE' || tag === 'PRE') return;
+          if (pnode.classList && pnode.classList.contains('card-id')) return;
+        }
+        RE.lastIndex = 0;
+        var frag = document.createDocumentFragment(), last = 0, m;
+        while ((m = RE.exec(n.nodeValue))) {
+          if (m.index > last) frag.appendChild(document.createTextNode(n.nodeValue.slice(last, m.index)));
+          var a = document.createElement('a');
+          a.href = (localIds[m[1]] ? '' : reqBase) + '#' + m[1];
+          a.className = 'req-ref';
+          a.textContent = m[1];
+          frag.appendChild(a);
+          last = m.index + m[1].length;
+        }
+        if (last < n.nodeValue.length) frag.appendChild(document.createTextNode(n.nodeValue.slice(last)));
+        n.parentNode.replaceChild(frag, n);
       });
     }
 
