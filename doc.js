@@ -117,6 +117,19 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]) .md-body blockquote.callout-info,:root:not([data-theme=light]) .md-body blockquote.callout-ok,:root:not([data-theme=light]) .md-body blockquote.callout-warn,:root:not([data-theme=light]) .md-body blockquote.callout-danger{background:var(--muted);}}
 :root[data-theme=dark] .compare-bad,:root[data-theme=dark] .compare-good{background:var(--muted);}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]) .compare-bad,:root:not([data-theme=light]) .compare-good{background:var(--muted);}}
+/* 카드: #content 에 data-cards="h3" 를 둔 문서에서만 켜진다(옵트인).
+   요구사항·규칙처럼 「제목 + 본문」이 한 덩어리로 읽혀야 하는 문서용. */
+.md-body .card{position:relative;border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow-xs);padding:var(--sp-5) var(--sp-6) var(--sp-1);margin:var(--sp-5) 0 var(--sp-6);}
+.md-body .card>h3{margin:0 0 var(--sp-4);padding-right:8rem;line-height:1.35;}
+.md-body .card>h3 .card-id{position:absolute;top:var(--sp-5);right:var(--sp-6);font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--primary);background:color-mix(in srgb,var(--primary) 9%,transparent);border:1px solid color-mix(in srgb,var(--primary) 30%,transparent);padding:3px 8px;white-space:nowrap;}
+.md-body .card>h3 .card-title{font-weight:700;letter-spacing:-.01em;}
+@media (max-width:680px){
+  .md-body .card>h3{padding-right:0;}
+  .md-body .card>h3 .card-id{position:static;display:block;width:fit-content;margin:0 0 var(--sp-2);}
+}
+.md-body .card>*:last-child{margin-bottom:var(--sp-4);}
+.md-body .card .table-wrap{box-shadow:none;}
+.md-body .card>p:first-of-type{color:var(--foreground);}
 .md-body ol{list-style:none;counter-reset:step;padding-left:0;margin:var(--sp-4) 0 var(--sp-6);}
 .md-body ol>li{counter-increment:step;position:relative;padding-left:2.75rem;margin-bottom:var(--sp-4);min-height:1.75rem;}
 .md-body ol>li::before{content:counter(step);position:absolute;left:0;top:-1px;width:1.75rem;height:1.75rem;background:var(--primary);color:var(--primary-foreground);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
@@ -207,6 +220,33 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
       first.remove();
       bq.insertBefore(title, bq.firstChild);
     });
+
+    // 카드 묶기 — #content 에 data-cards="h3" 가 있을 때만 돈다.
+    // 안 켠 문서의 렌더는 한 픽셀도 바뀌지 않는다(옵트인).
+    // 「ID — 제목」 형태의 헤딩은 ID 를 배지로, 나머지를 제목으로 가른다.
+    var cardSel = host.getAttribute('data-cards');
+    if (cardSel) {
+      var heads = Array.prototype.slice.call(host.querySelectorAll(':scope > ' + cardSel));
+      var STOP = { H1: 1, H2: 1, HR: 1 };
+      heads.forEach(function (h) {
+        var card = document.createElement('section');
+        card.className = 'card';
+        h.parentNode.insertBefore(card, h);
+        var n = h;
+        while (n) {
+          var next = n.nextElementSibling;
+          card.appendChild(n);
+          if (!next || next.tagName === h.tagName || STOP[next.tagName]) break;
+          n = next;
+        }
+        var m = h.textContent.match(/^\s*([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+)\s*[—–-]\s*([\s\S]+)$/);
+        if (!m) return;
+        h.textContent = '';
+        var idEl = document.createElement('span'); idEl.className = 'card-id'; idEl.textContent = m[1];
+        var tEl = document.createElement('span'); tEl.className = 'card-title'; tEl.textContent = m[2].trim();
+        h.appendChild(idEl); h.appendChild(tEl);
+      });
+    }
 
     var nav = document.getElementById('nav');
     var h2s = host.querySelectorAll('h2');
