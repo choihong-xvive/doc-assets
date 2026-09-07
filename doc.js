@@ -49,7 +49,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .layout{display:grid;grid-template-columns:280px 1fr;max-width:1400px;margin:0 auto;min-height:100vh;}
 .sidebar{border-right:1px solid var(--border);padding:var(--sp-10) var(--sp-6);position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--sidebar);}
 .sidebar-brand{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-foreground);font-weight:700;margin-bottom:var(--sp-2);}
-.sidebar-title{font-size:18px;font-weight:800;line-height:1.3;margin-bottom:var(--sp-3);letter-spacing:-.02em;}
+.sidebar-title{font-size:18px;font-weight:800;line-height:1.3;margin:0 0 var(--sp-3);letter-spacing:-.02em;}
 .sidebar-version{display:inline-block;font-size:10px;border:1px solid color-mix(in srgb,var(--primary) 40%,transparent);color:var(--primary);background:color-mix(in srgb,var(--primary) 8%,transparent);padding:2px 8px;margin-bottom:var(--sp-8);font-weight:700;letter-spacing:.05em;}
 /* 버전 배지를 사이드바 하단(메타 뒤)에 둔 문서용. 위에 둔 기존 문서는 그대로다 */
 .sidebar-meta + .sidebar-version{margin:var(--sp-5) 0 0;}
