@@ -149,7 +149,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .md-body:has(.doctabs) h2,.md-body:has(.doctabs) .card{scroll-margin-top:5.5rem;}
 .doctabs a{padding:var(--sp-3) var(--sp-5);font-size:13.5px;font-weight:600;color:var(--muted-foreground);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s,background .12s;}
 .doctabs a:hover{color:var(--foreground);background:var(--accent);text-decoration:none;}
-.doctabs a[aria-current=page]{color:var(--primary);border-bottom-color:var(--primary);}
+.doctabs a[aria-current=page]{color:var(--primary);border-bottom-color:var(--primary);pointer-events:none;cursor:default;}
 @media (max-width:680px){.doctabs a{padding:var(--sp-2) var(--sp-3);font-size:12.5px;}.md-body:has(.doctabs) h2,.md-body:has(.doctabs) .card{scroll-margin-top:4.5rem;}}
 /* 진행 막대: 누적 세그먼트 + 같은 줄 범례. 폭은 요소의 style 속성으로 들어온다
    (색·간격은 여기서만 정한다 — 넘어오는 건 데이터뿐이다). */
