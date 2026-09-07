@@ -137,6 +137,10 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .md-body ol>li::before{content:counter(step);position:absolute;left:0;top:-1px;width:1.75rem;height:1.75rem;background:var(--primary);color:var(--primary-foreground);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
 /* 문서 탭: 한 기능의 형제 문서 사이 이동. 표가 아니라 네비게이션이므로 nav 로 쓴다
    (표로 만들면 마크다운 첫 행이 헤더가 되어 내용 없는 빈 표가 된다). */
+/* sticky 탭이 있는 문서는 본문 상단 여백을 탭이 대신한다. 여백을 남기면 붙기 전에
+   빈 띠가 보이고, 붙은 뒤엔 그 자리가 비어 보인다. 숫자를 베끼지 않고 그 .main 을 겨냥한다
+   — 브레이크포인트마다 다른 padding 값을 따라 적지 않아도 된다. */
+.main:has(.doctabs){padding-top:0;}
 .doctabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;background:var(--background);border-bottom:1px solid var(--border);margin:0 0 var(--sp-8);}
 /* sticky 탭이 앵커 대상을 가린다 — 탭이 있는 문서에서만 여유를 준다 */
 .md-body:has(.doctabs) h2{scroll-margin-top:5.5rem;}
