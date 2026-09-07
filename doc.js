@@ -129,6 +129,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
   .md-body .card>h3{padding-right:0;}
   .md-body .card>h3 .card-id{position:static;display:block;width:fit-content;margin:0 0 var(--sp-2);}
 }
+.md-body .card:target{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary);}
 .md-body .card>*:last-child{margin-bottom:var(--sp-4);}
 .md-body .card .table-wrap{box-shadow:none;}
 .md-body .card>p:first-of-type{color:var(--foreground);}
@@ -143,11 +144,11 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .main:has(.doctabs){padding-top:0;}
 .doctabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;background:var(--background);border-bottom:1px solid var(--border);margin:0 calc(-1 * var(--main-px)) var(--sp-8);padding:0 calc(var(--main-px) - var(--sp-5));}
 /* sticky 탭이 앵커 대상을 가린다 — 탭이 있는 문서에서만 여유를 준다 */
-.md-body:has(.doctabs) h2{scroll-margin-top:5.5rem;}
+.md-body:has(.doctabs) h2,.md-body:has(.doctabs) .card{scroll-margin-top:5.5rem;}
 .doctabs a{padding:var(--sp-3) var(--sp-5);font-size:13.5px;font-weight:600;color:var(--muted-foreground);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s,background .12s;}
 .doctabs a:hover{color:var(--foreground);background:var(--accent);text-decoration:none;}
 .doctabs a[aria-current=page]{color:var(--primary);border-bottom-color:var(--primary);}
-@media (max-width:680px){.doctabs a{padding:var(--sp-2) var(--sp-3);font-size:12.5px;}.md-body:has(.doctabs) h2{scroll-margin-top:4.5rem;}}
+@media (max-width:680px){.doctabs a{padding:var(--sp-2) var(--sp-3);font-size:12.5px;}.md-body:has(.doctabs) h2,.md-body:has(.doctabs) .card{scroll-margin-top:4.5rem;}}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4);margin:var(--sp-5) 0;}
 .compare-col{padding:var(--sp-4) var(--sp-5);border:1px solid var(--border);}
 .compare-bad{background:color-mix(in srgb,var(--destructive) 4%,var(--card));border-color:color-mix(in srgb,var(--destructive) 22%,var(--border));}
@@ -256,6 +257,7 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
         }
         var m = h.textContent.match(/^\s*([A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+)\s*[—–-]\s*([\s\S]+)$/);
         if (!m) return;
+        card.id = m[1];               // 다른 문서가 #REQ-XXX-001 로 딥링크할 수 있게
         h.textContent = '';
         var idEl = document.createElement('span'); idEl.className = 'card-id'; idEl.textContent = m[1];
         var tEl = document.createElement('span'); tEl.className = 'card-title'; tEl.textContent = m[2].trim();
