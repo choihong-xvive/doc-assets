@@ -160,10 +160,14 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .doctabs a:hover{color:var(--foreground);background:var(--accent);text-decoration:none;}
 .doctabs a[aria-current=page]{color:var(--primary);border-bottom-color:var(--primary);pointer-events:none;cursor:default;}
 @media (max-width:680px){.doctabs a{padding:var(--sp-2) var(--sp-3);font-size:12.5px;}.md-body:has(.doctabs) h2,.md-body:has(.doctabs) .card{scroll-margin-top:4.5rem;}}
-/* 뒤로가기: 탭 줄의 왼쪽 여백에 앉는다. 탭이 아니므로 밑줄도 현재 표시도 없다. */
-#goBack{flex:0 0 auto;align-self:center;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;margin-right:var(--sp-2);padding:0;cursor:pointer;background:transparent;color:var(--muted-foreground);border:1px solid transparent;font:600 16px/1 "Nunito Sans",system-ui,sans-serif;transition:color .12s,background .12s,border-color .12s;}
+/* 뒤로가기: 탭 줄 왼쪽 여백에 **겹쳐** 앉는다 (absolute).
+   flow 에서 빠지므로 탭 위치는 버튼이 있든 없든 똑같다 — 기존 레이아웃을 건드리지 않는다.
+   여백 폭은 calc(--main-px - --sp-5) = 44px 이고 그 안에 28px 을 가운데 둔다.
+   1024px 아래에서는 --main-px 가 줄어 여백이 4px 이라 자리가 없다 — 그때는 내지 않는다. */
+#goBack{position:absolute;left:calc((var(--main-px) - var(--sp-5) - 28px) / 2);top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;cursor:pointer;background:transparent;color:var(--muted-foreground);border:1px solid transparent;transition:color .12s,background .12s,border-color .12s;}
 #goBack:hover{color:var(--foreground);background:var(--accent);border-color:var(--border);}
-@media (max-width:680px){#goBack{width:24px;height:24px;font-size:14px;margin-right:var(--sp-1,4px);}}
+#goBack svg{display:block;}
+@media (max-width:1024px){#goBack{display:none;}}
 /* 진행 막대: 누적 세그먼트 + 같은 줄 범례. 폭은 요소의 style 속성으로 들어온다
    (색·간격은 여기서만 정한다 — 넘어오는 건 데이터뿐이다). */
 .progress{display:flex;height:10px;border:1px solid var(--border);overflow:hidden;margin:var(--sp-4) 0 var(--sp-3);background:var(--muted);}
@@ -465,7 +469,8 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
         back.type = 'button';
         back.setAttribute('aria-label', '뒤로 가기');
         back.title = '뒤로 가기';
-        back.textContent = '←';
+        // lucide chevron-left. 아이콘 하나 때문에 라이브러리를 물리지 않는다.
+        back.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>';
         tabs.insertBefore(back, tabs.firstChild);
       }
       back.onclick = function () { history.back(); };
