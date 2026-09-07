@@ -90,14 +90,17 @@ body{font-family:"Nunito Sans",-apple-system,BlinkMacSystemFont,"Pretendard","Ap
 .md-body code{font-family:var(--mono);font-size:.85em;background:var(--muted);color:var(--foreground);padding:2px 6px;}
 .md-body pre{background:var(--pre-bg);color:var(--pre-fg);border:1px solid var(--border);padding:var(--sp-4) var(--sp-5);overflow-x:auto;font-size:13px;line-height:1.7;margin:var(--sp-4) 0 var(--sp-6);white-space:pre;}
 .md-body pre code{background:transparent;color:var(--pre-fg);padding:0;font-size:13px;font-family:var(--mono);}
-.table-wrap{border:1px solid var(--border);overflow:hidden;margin:var(--sp-4) 0 var(--sp-6);box-shadow:var(--shadow-xs);}
+.table-wrap{border:1px solid var(--border);overflow-x:auto;margin:var(--sp-4) 0 var(--sp-6);box-shadow:var(--shadow-xs);}
 .md-body table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);}
 .md-body th{background:var(--muted);color:var(--muted-foreground);padding:10px 15px;font-weight:600;font-size:12.5px;border-bottom:1px solid var(--border);}
 .md-body th:not([align]){text-align:left;}
 .md-body td{padding:10px 15px;border-bottom:1px solid var(--border);vertical-align:top;}
 .md-body tbody tr:last-child td{border-bottom:0;}
 .md-body tbody tr:hover td{background:color-mix(in srgb,var(--muted) 55%,transparent);}
-.md-body td code{white-space:nowrap;}
+/* 표 안 코드: 끊을 자리를 min-content 계산에 넣는다 (CSS Text 4 의 anywhere).
+   break-word 는 min-content 를 안 바꿔서 긴 경로가 열 폭을 계속 인질로 잡는다.
+   짧은 열은 col-tight 가 셀 단위 nowrap 으로 지킨다 — 길이 문턱을 코드에 두지 않는다. */
+.md-body td code{overflow-wrap:anywhere;}
 .md-body th.col-tight,.md-body td.col-tight{width:1%;white-space:nowrap;}
 .md-body blockquote{border:1px solid var(--border);border-left:3px solid var(--muted-foreground);background:var(--muted);padding:var(--sp-4) var(--sp-5);margin:var(--sp-5) 0;}
 .md-body blockquote p:last-child{margin-bottom:0;}
